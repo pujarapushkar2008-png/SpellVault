@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111018">
+  <meta name="description" content="SpellVault — your digital world, under your protection.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <title>SpellVault</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <section id="welcome" class="welcome-screen">
+      <div class="welcome-orb" aria-hidden="true"><div class="orb-ring"></div><div class="orb-core">S</div></div>
+      <div class="welcome-copy">
+        <div class="eyebrow"><span class="status-dot"></span> PERSONAL DIGITAL VAULT</div>
+        <h1>Spell<span>Vault</span></h1>
+        <p>Your digital world.<br>Under your protection.</p>
+        <button id="continueBtn" class="btn btn-primary btn-large">Enter your vault <span>↗</span></button>
+        <div class="welcome-foot"><span class="tiny-lock">◆</span> Stored on this device</div>
+      </div>
+    </section>
+
+    <section id="unlockScreen" class="gate-screen hidden">
+      <div class="gate-card">
+        <div class="mini-mark">S</div><p class="eyebrow">WELCOME BACK</p>
+        <h2>Your vault is locked</h2>
+        <p class="muted">Enter your master passphrase to unlock SpellVault.</p>
+        <form id="unlockForm">
+          <label for="masterPass">Master passphrase</label>
+          <input id="masterPass" type="password" autocomplete="off" required>
+          <p id="unlockError" class="form-error"></p>
+          <button class="btn btn-primary full" type="submit">Unlock vault</button>
+        </form>
+      </div>
+    </section>
+
+    <main id="mainView" class="main-view hidden">
+      <header class="topbar">
+        <button id="backBtn" class="icon-btn hidden" aria-label="Go back">←</button>
+        <a class="brand" href="#" id="brandHome"><span class="brand-mark">S</span><span>SpellVault</span></a>
+        <div class="top-actions">
+          <span class="local-pill"><i></i> LOCAL</span>
+          <button id="settingsBtn" class="icon-btn" aria-label="Settings">⚙</button>
+        </div>
+      </header>
+
+      <section id="mailPage" class="page">
+        <div class="page-heading">
+          <div><p class="eyebrow">YOUR PRIVATE SPACE</p><h2>Your vault<span class="heading-period">.</span></h2><p class="muted">Keep every login in its place.</p></div>
+          <div class="heading-emblem">✳</div>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap"><span>⌕</span><input id="mailSearch" type="search" placeholder="Search your emails..." autocomplete="off"></div>
+          <button id="addMailBtn" class="btn btn-primary"><span>＋</span> Add mail</button>
+        </div>
+        <div class="section-label"><span>SAVED EMAILS</span><span id="mailCount" class="count-label">0 entries</span></div>
+        <div id="mailGrid" class="mail-grid"></div>
+      </section>
+
+      <section id="appPage" class="page hidden">
+        <div class="page-heading app-heading">
+          <div><p class="eyebrow">EMAIL COLLECTION</p><h2 id="selectedMailTitle">Applications<span class="heading-period">.</span></h2><p id="selectedMailSubtitle" class="muted"></p></div>
+          <div class="heading-emblem">⌘</div>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap"><span>⌕</span><input id="appSearch" type="search" placeholder="Find an application..." autocomplete="off"></div>
+          <button id="addAppBtn" class="btn btn-primary"><span>＋</span> Add app</button>
+        </div>
+        <div class="section-label"><span>YOUR APPLICATIONS</span><span id="appCount" class="count-label">0 entries</span></div>
+        <div id="appList" class="app-list"></div>
+      </section>
+
+      <section id="settingsPage" class="page hidden">
+        <div class="page-heading"><div><p class="eyebrow">PREFERENCES & PROTECTION</p><h2>Settings<span class="heading-period">.</span></h2><p class="muted">Make your vault work the way you do.</p></div><div class="heading-emblem">⚙</div></div>
+        <div class="settings-stack">
+          <article class="settings-card">
+            <div class="settings-title"><div class="settings-icon">◈</div><div><h3>Vault protection</h3><p class="muted">Encrypt all stored vault data with a master passphrase.</p></div></div>
+            <div class="setting-row"><div><strong>App Lock</strong><p class="muted">Require a passphrase when opening the vault.</p></div><label class="switch"><input id="globalLockToggle" type="checkbox"><span></span></label></div>
+            <p class="security-note">Data is stored only on this device. Without App Lock, anyone who can open this app can read the unlocked passwords. Individual app locks encrypt their passwords separately.</p>
+          </article>
+          <article class="settings-card">
+            <div class="settings-title"><div class="settings-icon">⇧</div><div><h3>Backup & restore</h3><p class="muted">Keep a separate copy of your vault.</p></div></div>
+            <div class="button-row"><button id="exportBtn" class="btn btn-secondary">Export JSON</button><button id="importBtn" class="btn btn-secondary">Import backup</button><input id="importFile" type="file" accept="application/json,.json" hidden></div>
+            <p class="muted small">An unencrypted export is readable by anyone who gets the file. Locked app passwords remain encrypted.</p>
+          </article>
+          <article class="settings-card">
+            <div class="settings-title"><div class="settings-icon">ⓘ</div><div><h3>About SpellVault</h3><p class="muted">A private, local-first password manager.</p></div></div>
+            <div class="setting-row"><span class="muted">Storage</span><strong>IndexedDB · This browser</strong></div>
+            <div class="setting-row"><span class="muted">Network</span><strong>Offline after first load</strong></div>
+            <div class="setting-row"><span class="muted">Version</span><strong>1.0.0</strong></div>
+          </article>
+          <article class="settings-card danger-card"><div><h3>Clear all vault data</h3><p class="muted">Permanently delete all saved emails and applications from this browser.</p></div><button id="clearDataBtn" class="btn btn-danger">Clear all data</button></article>
+        </div>
+      </section>
+      <footer class="app-footer"><span>SpellVault <span class="footer-dot">·</span> Your data stays yours.</span><span class="offline-label">● OFFLINE READY</span></footer>
+    </main>
+  </div>
+
+  <div id="sheetBackdrop" class="sheet-backdrop hidden"></div>
+  <section id="sheet" class="bottom-sheet hidden" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><div><p class="eyebrow" id="sheetEyebrow">NEW ENTRY</p><h2 id="sheetTitle">Add mail</h2></div><button id="closeSheetBtn" class="icon-btn" aria-label="Close">×</button></div>
+    <form id="sheetForm" class="sheet-form"></form>
+  </section>
+
+  <div id="pinModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <button id="closePinBtn" class="modal-close" aria-label="Close">×</button>
+      <div class="mini-mark">S</div><p class="eyebrow">PROTECTED ENTRY</p><h2 id="pinTitle">Unlock application</h2><p id="pinDescription" class="muted">Enter the 4–6 digit PIN for this app.</p>
+      <form id="pinForm"><input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="••••" required><p id="pinError" class="form-error"></p><button class="btn btn-primary full" type="submit">Continue</button></form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="./database.js" defer></script>
+  <script src="./crypto.js" defer></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>
