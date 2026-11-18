@@ -1,0 +1,12 @@
+# Local secrets, backups and runtime data
+*.db
+*.sqlite
+*.sqlite3
+*.jsonl
+*.backup
+*.bak
+spellvault-backup*.json
+.env
+.DS_Store
+Thumbs.db
+node_modules/
